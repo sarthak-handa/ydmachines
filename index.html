@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yogiji Digi Dashboard</title>
+    <link href="./assets/img/yd-favicon.png" rel="icon" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+      /* --- PREMIUM THEME VARIABLES --- */
+      :root {
+        --bg-color: #0b1120;
+        --panel-bg: rgba(15, 23, 42, 0.85);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --card-bg: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+        --card-border: #334155;
+        --card-shadow: rgba(0, 0, 0, 0.5);
+        --accent-blue: #0ea5e9;
+        --led-run: #10b981;
+        --led-error: #ef4444;
+        --grid-line: rgba(148, 163, 184, 0.15);
+        --led-warn: #f59e0b;
+      }
+
+      body.light-mode {
+        --bg-color: #f8fafc;
+        --panel-bg: rgba(255, 255, 255, 0.95);
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --card-bg: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        --card-border: #e2e8f0;
+        --card-shadow: rgba(51, 65, 85, 0.08);
+        --grid-line: rgba(148, 163, 184, 0.3);
+      }
+
+      body {
+        margin: 0;
+        padding: 30px 40px;
+        background-image: url("./assets/img/YDMachineBg.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-color: #767271a3;
+        background-blend-mode: overlay;
+        background-attachment: fixed;
+        color: var(--text-main);
+        font-family: "Inter", "Segoe UI", sans-serif;
+        min-height: 100vh;
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+
+      /* --- HEADER --- */
+      .page-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 20px 30px;
+        border-radius: 16px;
+        background: var(--panel-bg);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 4px 20px var(--card-shadow);
+        backdrop-filter: blur(10px);
+        z-index: 50;
+        position: relative;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .yd-logo {
+        height: 50px;
+      }
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .circle-btn {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        color: var(--text-main);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s;
+      }
+      .circle-btn:hover {
+        border-color: var(--accent-blue);
+        color: var(--accent-blue);
+        transform: translateY(-2px);
+      }
+
+      /* Hamburger Menu Dropdown */
+      .menu-wrapper {
+        position: relative;
+      }
+      .dropdown-menu {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: var(--panel-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        padding: 10px 0;
+        min-width: 220px;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+        backdrop-filter: blur(15px);
+      }
+      .dropdown-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .dropdown-menu a {
+        color: var(--text-main);
+        text-decoration: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background 0.2s, color 0.2s;
+      }
+      .dropdown-menu a:hover {
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--accent-blue);
+      }
+      .dropdown-divider {
+        height: 1px;
+        background: var(--grid-line);
+        margin: 5px 0;
+      }
+
+      /* --- FILTERS PANEL --- */
+      .filter-panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--card-border);
+        border-top: 4px solid var(--accent-blue);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px var(--card-shadow);
+      }
+
+      .form-label {
+        font-weight: 700;
+        color: var(--text-muted);
+        font-size: 12px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .custom-select,
+      .custom-date {
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 12px 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .custom-select:focus,
+      .custom-date:focus {
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+        outline: none;
+      }
+
+      .custom-clear-btn {
+        background-color: transparent;
+        color: var(--text-muted);
+        border: 1px solid var(--card-border);
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .custom-clear-btn:hover {
+        background-color: var(--card-border);
+        color: var(--text-main);
+      }
+
+      /* Quick Filter Pills */
+      .btn-quick-filter {
+        background: var(--bg-color);
+        border: 1px solid var(--card-border);
+        color: var(--text-muted);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-quick-filter:hover {
+        border-color: var(--accent-blue);
+        color: var(--text-main);
+      }
+      .btn-quick-filter.active {
+        background: var(--accent-blue);
+        color: #fff;
+        border-color: var(--accent-blue);
+        box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+      }
+
+      /* Date inputs icon color fix */
+      ::-webkit-calendar-picker-indicator {
+        filter: invert(0.8);
+        cursor: pointer;
+      }
+      body.light-mode ::-webkit-calendar-picker-indicator {
+        filter: none;
+      }
+
+      /* --- LOGS TABLES & CARDS --- */
+      .log-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 10px 30px var(--card-shadow);
+        height: 100%;
+        margin-bottom: 24px;
+      }
+
+      .log-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--grid-line);
+        padding-bottom: 15px;
+      }
+
+      .log-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-main);
+      }
+
+      /* Export Buttons */
+      .btn-export {
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: all 0.2s;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-export-pdf {
+        border: 1px solid var(--led-error);
+        color: var(--led-error);
+        background: transparent;
+      }
+      .btn-export-pdf:hover {
+        background: var(--led-error);
+        color: white;
+      }
+      .btn-export-excel {
+        border: 1px solid var(--led-run);
+        color: var(--led-run);
+        background: transparent;
+        margin-left: 8px;
+      }
+      .btn-export-excel:hover {
+        background: var(--led-run);
+        color: white;
+      }
+
+      /* Table Styling */
+      .table-wrapper {
+        max-height: 400px;
+        overflow-y: auto;
+        border-radius: 8px;
+        border: 1px solid var(--grid-line);
+      }
+      .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: var(--text-main);
+        font-size: 13px;
+        text-align: left;
+      }
+      .custom-table thead {
+        background: var(--bg-color);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      .custom-table th {
+        padding: 12px 15px;
+        font-weight: 600;
+        color: var(--text-muted);
+        border-bottom: 2px solid var(--grid-line);
+      }
+      .custom-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--grid-line);
+        vertical-align: top;
+      }
+      .custom-table tbody tr:hover {
+        background: rgba(14, 165, 233, 0.05);
+      }
+
+      /* Summary Metric Cards */
+      .metric-card {
+        background: var(--bg-color);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 15px;
+        flex: 1;
+        min-width: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .metric-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .metric-value {
+        font-size: 24px;
+        font-weight: 800;
+        margin-top: 8px;
+      }
+      .border-cyan { border-top: 3px solid var(--accent-blue); }
+      .border-emerald { border-top: 3px solid var(--led-run); }
+      .border-slate { border-top: 3px solid var(--text-muted); }
+      .border-red { border-top: 3px solid var(--led-error); }
+      .border-yellow { border-top: 3px solid var(--led-warn); }
+      
+      .text-cyan { color: var(--accent-blue); }
+      .text-emerald { color: var(--led-run); }
+      .text-slate { color: var(--text-muted); }
+      .text-red { color: var(--led-error); }
+      .text-yellow { color: var(--led-warn); }
+
+      /* Chart container */
+      .chart-container {
+        position: relative;
+        height: 250px;
+        width: 100%;
+        background: var(--bg-color);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        padding: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="logo-container">
+        <a href="#">
+          <img
+            src="YDLOGO.png"
+            alt="YD"
+            class="yd-logo"
+            onerror="this.src='./assets/img/YDLOGO.png'"
+          />
+        </a>
+      </div>
+
+      <div class="controls">
+        <button class="circle-btn" id="theme-toggle" title="Toggle Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="menu-wrapper">
+          <button class="circle-btn" id="menu-toggle" title="Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <a href="#" style="background: rgba(14, 165, 233, 0.1); color: var(--accent-blue);">
+              <i class="fas fa-user" style="width: 20px"></i>
+              <span id="username">Admin</span>
+            </a>
+            <a href="#"><i class="fas fa-map-location-dot" style="width: 20px"></i>All Sheds Overview</a>
+            <a href="#"><i class="fas fa-book" style="width: 20px"></i>Machine Logs</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" style="color: var(--led-error)">
+              <i class="fas fa-sign-out-alt" style="width: 20px"></i> Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTERS PANEL -->
+    <div class="container-fluid filter-panel">
+      <div class="d-flex align-items-center mb-4 pb-3" style="border-bottom: 1px solid var(--grid-line)">
+        <i class="fas fa-filter me-2" style="color: var(--accent-blue); font-size: 20px"></i>
+        <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main);">
+          Data Filters & Parameters
+        </h4>
+        <button class="btn-export btn-export-excel ms-auto" style="padding: 10px 18px; font-size: 13px; margin-left: 0" title="Utilization Report">
+          <i class="fas fa-chart-column"></i> Utilization Report
+        </button>
+        <button class="btn-export btn-export-pdf" style="padding: 10px 18px; font-size: 13px; margin-left: 10px" title="Full Logs Report">
+          <i class="fas fa-file-pdf"></i> Full Logs Report
+        </button>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-3">
+          <label class="form-label"><i class="fas fa-industry"></i> Operating Unit</label>
+          <select class="form-select custom-select">
+            <option value="">All Units</option>
+            <option value="UNIT-1">Unit 1</option>
+            <option value="UNIT-2">Unit 2</option>
+            <option value="UNIT-3">Unit 3</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label"><i class="fas fa-warehouse"></i> Workshop Shed</label>
+          <select class="form-select custom-select">
+            <option value="">All Sheds</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label"><i class="fas fa-cogs"></i> Machine</label>
+          <select class="form-select custom-select">
+            <option value="">All Machines</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label"><i class="fas fa-list"></i> Select Log Type</label>
+          <select class="form-select custom-select">
+            <option value="all">All Logs (Default)</option>
+            <option value="part">Parts / Jobs Log Only</option>
+            <option value="breakdown">Breakdown Log Only</option>
+            <option value="hold">Hold / Pause Log Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-4 align-items-end p-3 rounded">
+        <div class="col-md-12 mb-1">
+          <label class="form-label" style="font-size: 11px"><i class="fas fa-bolt text-warning"></i> Quick Date Filters</label>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn-quick-filter">1 Day</button>
+            <button class="btn-quick-filter">7 Days</button>
+            <button class="btn-quick-filter">1 Month</button>
+            <button class="btn-quick-filter active">All Time</button>
+          </div>
+        </div>
+
+        <div class="col-md-4 mt-3">
+          <label class="form-label"><i class="far fa-calendar-alt"></i> Custom Start Date &amp; Time</label>
+          <div class="d-flex gap-2">
+            <input type="date" class="form-control custom-date" />
+            <input type="time" class="form-control custom-date" style="width: 8.5rem; padding-left: 10px; padding-right: 4px" value="00:00" />
+          </div>
+        </div>
+        <div class="col-md-4 mt-3">
+          <label class="form-label"><i class="far fa-calendar-check"></i> Custom End Date &amp; Time</label>
+          <div class="d-flex gap-2">
+            <input type="date" class="form-control custom-date" />
+            <input type="time" class="form-control custom-date" style="width: 8.5rem; padding-left: 10px; padding-right: 4px" value="00:00" />
+          </div>
+        </div>
+        <div class="col-md-4 mt-3 d-flex align-items-end">
+          <button class="btn btn-sm custom-clear-btn" style="padding: 6px 12px; font-size: 13px">
+            <i class="fas fa-times-circle me-1"></i> Clear Dates
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MACHINE UTILIZATION SECTION -->
+    <div class="container-fluid" style="margin-bottom: 30px">
+      <div class="log-card">
+        <div class="log-header">
+          <h3 class="log-title">
+            <i class="fas fa-chart-column me-2" style="color: var(--led-run)"></i>Machine Utilization
+            <span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 10px;">— All Units & Sheds · 27 Jun 2026, 15:48 to 27 Jul 2026, 15:48 (last 30 days)</span>
+          </h3>
+          <div>
+            <button class="btn-export btn-export-pdf">
+              <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button class="btn-export btn-export-excel">
+              <i class="fas fa-file-excel"></i> Excel
+            </button>
+          </div>
+        </div>
+        
+        <!-- Metrics -->
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px">
+          <div class="metric-card border-cyan">
+            <span class="metric-label">AVG PARTS</span>
+            <span class="metric-value text-cyan">1,245</span>
+          </div>
+          <div class="metric-card border-emerald">
+            <span class="metric-label">AVG RUNNING</span>
+            <span class="metric-value text-emerald">78.4%</span>
+          </div>
+          <div class="metric-card border-slate">
+            <span class="metric-label">AVG IDLE</span>
+            <span class="metric-value text-slate">12.1%</span>
+          </div>
+          <div class="metric-card border-red">
+            <span class="metric-label">AVG BREAKDOWN</span>
+            <span class="metric-value text-red">4.3%</span>
+          </div>
+          <div class="metric-card border-yellow">
+            <span class="metric-label">AVG HOLD</span>
+            <span class="metric-value text-yellow">5.2%</span>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="chart-container">
+              <canvas id="utilBarChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="chart-container" style="display: flex; justify-content: center;">
+              <canvas id="utilDoughnutChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="chart-container">
+              <canvas id="utilLineChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-wrapper">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Machine</th>
+                <th>Unit</th>
+                <th>Shed</th>
+                <th style="text-align: right;">Parts</th>
+                <th style="text-align: right;">Running</th>
+                <th style="text-align: right;">Idle</th>
+                <th style="text-align: right; color: var(--led-error);">Breakdown</th>
+                <th style="text-align: right; color: var(--led-warn);">Hold</th>
+                <th style="text-align: right; color: var(--accent-blue);">Run %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>27 Jul 2026</td>
+                <td style="font-weight: 600;">CNC-Milling-01</td>
+                <td>Unit 1</td>
+                <td>Shed A</td>
+                <td style="text-align: right;">142</td>
+                <td style="text-align: right; color: var(--led-run);">18h 20m</td>
+                <td style="text-align: right; color: var(--text-muted);">2h 10m</td>
+                <td style="text-align: right; color: var(--led-error);">1h 00m</td>
+                <td style="text-align: right; color: var(--led-warn);">2h 30m</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">76.3%</td>
+              </tr>
+              <tr>
+                <td>26 Jul 2026</td>
+                <td style="font-weight: 600;">Lathe-Heavy-03</td>
+                <td>Unit 2</td>
+                <td>Shed B</td>
+                <td style="text-align: right;">89</td>
+                <td style="text-align: right; color: var(--led-run);">20h 45m</td>
+                <td style="text-align: right; color: var(--text-muted);">1h 15m</td>
+                <td style="text-align: right; color: var(--led-error);">0h 00m</td>
+                <td style="text-align: right; color: var(--led-warn);">2h 00m</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">86.4%</td>
+              </tr>
+              <tr>
+                <td>25 Jul 2026</td>
+                <td style="font-weight: 600;">Plasma-Cutter-02</td>
+                <td>Unit 1</td>
+                <td>Shed C</td>
+                <td style="text-align: right;">315</td>
+                <td style="text-align: right; color: var(--led-run);">15h 30m</td>
+                <td style="text-align: right; color: var(--text-muted);">4h 00m</td>
+                <td style="text-align: right; color: var(--led-error);">3h 30m</td>
+                <td style="text-align: right; color: var(--led-warn);">1h 00m</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">64.5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL LOGS REPORT SECTION -->
+    <div class="container-fluid" style="margin-bottom: 30px">
+      <div class="log-card">
+        <div class="log-header">
+          <h3 class="log-title">
+            <i class="fas fa-file-lines me-2" style="color: var(--accent-blue)"></i>Full Logs Report
+            <span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 10px;">— All Units (All Sheds) · Beginning to Today</span>
+          </h3>
+          <div>
+            <button class="btn-export btn-export-pdf">
+              <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button class="btn-export btn-export-excel">
+              <i class="fas fa-file-excel"></i> Excel
+            </button>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px">
+          <div class="metric-card border-cyan">
+            <span class="metric-label">TOTAL JOBS</span>
+            <span class="metric-value text-cyan">8,932</span>
+          </div>
+          <div class="metric-card border-slate">
+            <span class="metric-label">AVG DURATION</span>
+            <span class="metric-value" style="color: #818cf8;">4h 12m</span>
+          </div>
+          <div class="metric-card border-emerald">
+            <span class="metric-label">ACTIVE MACHINES</span>
+            <span class="metric-value text-emerald">42 / 45</span>
+          </div>
+          <div class="metric-card border-red">
+            <span class="metric-label">TOTAL BREAKDOWNS</span>
+            <span class="metric-value text-red">156</span>
+          </div>
+          <div class="metric-card border-yellow">
+            <span class="metric-label">TOTAL HOLD TIME</span>
+            <span class="metric-value text-yellow">420 hrs</span>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="chart-container">
+              <canvas id="logsLineChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="chart-container">
+              <canvas id="logsBarChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="chart-container" style="display: flex; justify-content: center;">
+              <canvas id="logsPieChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-wrapper">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Machine</th>
+                <th>Unit / Shed</th>
+                <th>Date</th>
+                <th>Project No</th>
+                <th>Client</th>
+                <th>Part Name</th>
+                <th>Drawing No</th>
+                <th>Start</th>
+                <th>End</th>
+                <th style="text-align: right;">Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 600;">CNC-Milling-01</td>
+                <td>U1 / SA</td>
+                <td>27 Jul 2026</td>
+                <td style="color: var(--accent-blue); font-weight: 600;">PRJ-2026-89</td>
+                <td>Tata Steel</td>
+                <td>Housing Base</td>
+                <td style="color: var(--text-muted);">DWG-8812-A</td>
+                <td style="color: var(--text-muted);">08:00</td>
+                <td style="color: var(--text-muted);">14:30</td>
+                <td style="text-align: right; color: var(--led-run); font-weight: 600;">6h 30m</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600;">Lathe-Heavy-03</td>
+                <td>U2 / SB</td>
+                <td>26 Jul 2026</td>
+                <td style="color: var(--accent-blue); font-weight: 600;">PRJ-2026-92</td>
+                <td>JSW</td>
+                <td>Main Shaft</td>
+                <td style="color: var(--text-muted);">DWG-9901-C</td>
+                <td style="color: var(--text-muted);">10:15</td>
+                <td style="color: var(--text-muted);">19:45</td>
+                <td style="text-align: right; color: var(--led-run); font-weight: 600;">9h 30m</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600;">Boring-Mac-01</td>
+                <td>U1 / SC</td>
+                <td>25 Jul 2026</td>
+                <td style="color: var(--accent-blue); font-weight: 600;">PRJ-2026-77</td>
+                <td>Essar</td>
+                <td>Gearbox Casing</td>
+                <td style="color: var(--text-muted);">DWG-7742-B</td>
+                <td style="color: var(--text-muted);">09:00</td>
+                <td style="color: var(--text-muted);">11:15</td>
+                <td style="text-align: right; color: var(--led-run); font-weight: 600;">2h 15m</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // --- MENU TOGGLE LOGIC ---
+      const menuToggle = document.getElementById("menu-toggle");
+      const dropdownMenu = document.getElementById("dropdown-menu");
+
+      if (menuToggle && dropdownMenu) {
+        menuToggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!dropdownMenu.contains(e.target) && e.target !== menuToggle) {
+            dropdownMenu.classList.remove("active");
+          }
+        });
+      }
+
+      // --- THEME LOGIC ---
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const body = document.body;
+      const themeIcon = themeToggleBtn.querySelector("i");
+
+      if (localStorage.getItem("yd_theme") === "light") {
+        body.classList.add("light-mode");
+        themeIcon.classList.replace("fa-moon", "fa-sun");
+      }
+
+      themeToggleBtn.addEventListener("click", () => {
+        body.classList.toggle("light-mode");
+        if (body.classList.contains("light-mode")) {
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+          localStorage.setItem("yd_theme", "light");
+        } else {
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+          localStorage.setItem("yd_theme", "dark");
+        }
+      });
+      
+      // --- CHART INITIALIZATION ---
+      Chart.defaults.color = '#94a3b8'; // --text-muted
+      Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.15)'; // --grid-line
+      Chart.defaults.font.family = "'Inter', 'Segoe UI', sans-serif";
+
+      const cyan = '#0ea5e9'; // --accent-blue
+      const emerald = '#10b981'; // --led-run
+      const red = '#ef4444'; // --led-error
+      const yellow = '#f59e0b'; // --led-warn
+      const slate = '#64748b'; 
+      const indigo = '#818cf8';
+
+      // 1. Machine Utilization: Bar Chart (Running vs Idle vs Breakdown)
+      const ctxUtilBar = document.getElementById('utilBarChart').getContext('2d');
+      new Chart(ctxUtilBar, {
+          type: 'bar',
+          data: {
+              labels: ['Unit 1', 'Unit 2', 'Unit 3', 'Unit 4'],
+              datasets: [
+                  { label: 'Running', data: [75, 82, 68, 90], backgroundColor: emerald },
+                  { label: 'Idle', data: [15, 10, 20, 5], backgroundColor: slate },
+                  { label: 'Breakdown', data: [10, 8, 12, 5], backgroundColor: red }
+              ]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { position: 'top' },
+                  title: { display: true, text: 'Utilization by Unit (%)', color: '#f8fafc' }
+              },
+              scales: {
+                  x: { stacked: true },
+                  y: { stacked: true, max: 100 }
+              }
+          }
+      });
+
+      // 2. Machine Utilization: Doughnut Chart (Overall Status)
+      const ctxUtilDoughnut = document.getElementById('utilDoughnutChart').getContext('2d');
+      new Chart(ctxUtilDoughnut, {
+          type: 'doughnut',
+          data: {
+              labels: ['Running', 'Idle', 'Breakdown', 'Hold'],
+              datasets: [{
+                  data: [65, 15, 10, 10],
+                  backgroundColor: [emerald, slate, red, yellow],
+                  borderWidth: 0
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '70%',
+              plugins: {
+                  legend: { position: 'right' },
+                  title: { display: true, text: 'Overall Time Distribution', color: '#f8fafc' }
+              }
+          }
+      });
+
+      // 3. Machine Utilization: Line Chart (Trend over time)
+      const ctxUtilLine = document.getElementById('utilLineChart').getContext('2d');
+      new Chart(ctxUtilLine, {
+          type: 'line',
+          data: {
+              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              datasets: [
+                  {
+                      label: 'Avg Run %',
+                      data: [72, 75, 78, 74, 80, 85, 82],
+                      borderColor: cyan,
+                      backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                      borderWidth: 2,
+                      fill: true,
+                      tension: 0.4
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { display: false },
+                  title: { display: true, text: 'Running % Trend (Last 7 Days)', color: '#f8fafc' }
+              },
+              scales: {
+                  y: { min: 50, max: 100 }
+              }
+          }
+      });
+
+      // 4. Logs Report: Line Chart (Jobs Completed)
+      const ctxLogsLine = document.getElementById('logsLineChart').getContext('2d');
+      new Chart(ctxLogsLine, {
+          type: 'line',
+          data: {
+              labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+              datasets: [
+                  {
+                      label: 'Jobs Completed',
+                      data: [210, 245, 195, 280],
+                      borderColor: indigo,
+                      backgroundColor: 'rgba(129, 140, 248, 0.1)',
+                      borderWidth: 2,
+                      fill: true,
+                      tension: 0.4
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { display: false },
+                  title: { display: true, text: 'Weekly Jobs Completed', color: '#f8fafc' }
+              }
+          }
+      });
+
+      // 5. Logs Report: Bar Chart (Breakdowns by Machine Type)
+      const ctxLogsBar = document.getElementById('logsBarChart').getContext('2d');
+      new Chart(ctxLogsBar, {
+          type: 'bar',
+          data: {
+              labels: ['CNC', 'Lathe', 'Milling', 'Plasma', 'Drill'],
+              datasets: [
+                  {
+                      label: 'Breakdown Incidents',
+                      data: [12, 19, 8, 5, 2],
+                      backgroundColor: red,
+                      borderRadius: 4
+                  }
+              ]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { display: false },
+                  title: { display: true, text: 'Breakdowns by Machine Type', color: '#f8fafc' }
+              }
+          }
+      });
+
+      // 6. Logs Report: Pie Chart (Hold Reasons)
+      const ctxLogsPie = document.getElementById('logsPieChart').getContext('2d');
+      new Chart(ctxLogsPie, {
+          type: 'pie',
+          data: {
+              labels: ['Waiting for Material', 'Operator Unavailable', 'Quality Check', 'Tooling Issue'],
+              datasets: [{
+                  data: [45, 25, 20, 10],
+                  backgroundColor: [yellow, '#f59e0b', '#fbbf24', '#fcd34d'],
+                  borderWidth: 1,
+                  borderColor: 'rgba(15, 23, 42, 0.85)' // Match panel background for seamless cutout effect
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { position: 'right' },
+                  title: { display: true, text: 'Hold Reasons Breakdown', color: '#f8fafc' }
+              }
+          }
+      });
+    </script>
+  </body>
+</html>
