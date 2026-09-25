@@ -110,141 +110,6 @@
         transform: translateY(-2px);
       }
 
-      /* Hamburger Menu Dropdown */
-      .menu-wrapper {
-        position: relative;
-      }
-      .dropdown-menu {
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background: var(--panel-bg);
-        border: 1px solid var(--card-border);
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        padding: 10px 0;
-        min-width: 220px;
-        display: flex;
-        flex-direction: column;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 100;
-        backdrop-filter: blur(15px);
-      }
-      .dropdown-menu.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-      .dropdown-menu a {
-        color: var(--text-main);
-        text-decoration: none;
-        padding: 12px 20px;
-        font-size: 14px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        transition: background 0.2s, color 0.2s;
-      }
-      .dropdown-menu a:hover {
-        background: rgba(14, 165, 233, 0.1);
-        color: var(--accent-blue);
-      }
-      .dropdown-divider {
-        height: 1px;
-        background: var(--grid-line);
-        margin: 5px 0;
-      }
-
-      /* --- FILTERS PANEL --- */
-      .filter-panel {
-        background: var(--panel-bg);
-        border: 1px solid var(--card-border);
-        border-top: 4px solid var(--accent-blue);
-        border-radius: 12px;
-        padding: 30px;
-        margin-bottom: 30px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 10px 30px var(--card-shadow);
-      }
-
-      .form-label {
-        font-weight: 700;
-        color: var(--text-muted);
-        font-size: 12px;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .custom-select,
-      .custom-date {
-        background-color: var(--bg-color);
-        color: var(--text-main);
-        border: 1px solid var(--card-border);
-        border-radius: 8px;
-        padding: 12px 15px;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-      .custom-select:focus,
-      .custom-date:focus {
-        border-color: var(--accent-blue);
-        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
-        outline: none;
-      }
-
-      .custom-clear-btn {
-        background-color: transparent;
-        color: var(--text-muted);
-        border: 1px solid var(--card-border);
-        padding: 12px 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s;
-      }
-      .custom-clear-btn:hover {
-        background-color: var(--card-border);
-        color: var(--text-main);
-      }
-
-      /* Quick Filter Pills */
-      .btn-quick-filter {
-        background: var(--bg-color);
-        border: 1px solid var(--card-border);
-        color: var(--text-muted);
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-      .btn-quick-filter:hover {
-        border-color: var(--accent-blue);
-        color: var(--text-main);
-      }
-      .btn-quick-filter.active {
-        background: var(--accent-blue);
-        color: #fff;
-        border-color: var(--accent-blue);
-        box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
-      }
-
-      /* Date inputs icon color fix */
-      ::-webkit-calendar-picker-indicator {
-        filter: invert(0.8);
-        cursor: pointer;
-      }
-      body.light-mode ::-webkit-calendar-picker-indicator {
-        filter: none;
-      }
-
       /* --- LOGS TABLES & CARDS --- */
       .log-card {
         background: var(--card-bg);
@@ -254,6 +119,26 @@
         box-shadow: 0 10px 30px var(--card-shadow);
         height: 100%;
         margin-bottom: 24px;
+        transition: all 0.3s;
+      }
+
+      .log-card.fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        border-radius: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-color); /* ensures opacity doesn't show background when full */
+      }
+
+      .log-card.fullscreen .chart-container {
+        flex-grow: 1;
+        height: auto;
       }
 
       .log-header {
@@ -266,23 +151,38 @@
       }
 
       .log-title {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         margin: 0;
         color: var(--text-main);
       }
 
+      .btn-enlarge {
+        background: transparent;
+        border: 1px solid var(--card-border);
+        color: var(--text-muted);
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 13px;
+      }
+      .btn-enlarge:hover {
+        color: var(--text-main);
+        border-color: var(--accent-blue);
+      }
+
       /* Export Buttons */
       .btn-export {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 8px 16px;
+        font-size: 14px;
         font-weight: 600;
         border-radius: 6px;
         transition: all 0.2s;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
       }
       .btn-export-pdf {
         border: 1px solid var(--led-error);
@@ -297,11 +197,35 @@
         border: 1px solid var(--led-run);
         color: var(--led-run);
         background: transparent;
-        margin-left: 8px;
       }
       .btn-export-excel:hover {
         background: var(--led-run);
         color: white;
+      }
+
+      /* Toggle Buttons */
+      .btn-toggle {
+        padding: 12px 24px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 8px;
+        background: var(--panel-bg);
+        border: 1px solid var(--card-border);
+        color: var(--text-main);
+        transition: all 0.3s;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .btn-toggle:hover {
+        border-color: var(--accent-blue);
+        color: var(--accent-blue);
+      }
+      .btn-toggle.active {
+        background: var(--accent-blue);
+        color: white;
+        border-color: var(--accent-blue);
       }
 
       /* Table Styling */
@@ -344,46 +268,108 @@
         background: var(--bg-color);
         border: 1px solid var(--card-border);
         border-radius: 8px;
-        padding: 15px;
+        padding: 20px;
         flex: 1;
-        min-width: 150px;
+        min-width: 170px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
       }
       .metric-label {
-        font-size: 11px;
+        font-size: 11.5px;
         text-transform: uppercase;
         color: var(--text-muted);
         font-weight: 700;
         letter-spacing: 0.5px;
       }
       .metric-value {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 800;
-        margin-top: 8px;
+        margin-top: 10px;
       }
-      .border-cyan { border-top: 3px solid var(--accent-blue); }
-      .border-emerald { border-top: 3px solid var(--led-run); }
-      .border-slate { border-top: 3px solid var(--text-muted); }
-      .border-red { border-top: 3px solid var(--led-error); }
-      .border-yellow { border-top: 3px solid var(--led-warn); }
+      .border-cyan { border-top: 4px solid var(--accent-blue); }
+      .border-emerald { border-top: 4px solid var(--led-run); }
+      .border-slate { border-top: 4px solid var(--text-muted); }
+      .border-red { border-top: 4px solid var(--led-error); }
+      .border-yellow { border-top: 4px solid var(--led-warn); }
+      .border-indigo { border-top: 4px solid #818cf8; }
       
       .text-cyan { color: var(--accent-blue); }
       .text-emerald { color: var(--led-run); }
       .text-slate { color: var(--text-muted); }
       .text-red { color: var(--led-error); }
       .text-yellow { color: var(--led-warn); }
+      .text-indigo { color: #818cf8; }
+
+      /* Info Tooltip */
+      .info-icon {
+        color: var(--text-muted);
+        cursor: pointer;
+        position: relative;
+        font-size: 14px;
+      }
+      .info-icon:hover {
+        color: var(--text-main);
+      }
+      .info-tooltip {
+        visibility: hidden;
+        opacity: 0;
+        background-color: var(--panel-bg);
+        color: var(--text-main);
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 12px;
+        position: absolute;
+        z-index: 10;
+        bottom: 150%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 4px 15px var(--card-shadow);
+        width: max-content;
+        max-width: 200px;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: none;
+        transition: opacity 0.3s;
+      }
+      .info-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: var(--card-border) transparent transparent transparent;
+      }
+      .info-icon:hover .info-tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
 
       /* Chart container */
       .chart-container {
         position: relative;
-        height: 250px;
+        height: 280px;
         width: 100%;
         background: var(--bg-color);
         border: 1px solid var(--card-border);
         border-radius: 8px;
         padding: 15px;
+      }
+
+      .report-section {
+        display: none;
+        animation: fadeIn 0.4s ease-out;
+      }
+      .report-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
     </style>
   </head>
@@ -392,188 +378,195 @@
     <div class="page-header">
       <div class="logo-container">
         <a href="#">
-          <img
-            src="YDLOGO.png"
-            alt="YD"
-            class="yd-logo"
-            onerror="this.src='./assets/img/YDLOGO.png'"
-          />
+          <img src="YDLOGO.png" alt="YD" class="yd-logo" onerror="this.src='./assets/img/YDLOGO.png'"/>
         </a>
+        <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: var(--text-main); margin-left: 10px;">Executive Dashboard</h1>
       </div>
 
       <div class="controls">
         <button class="circle-btn" id="theme-toggle" title="Toggle Theme">
           <i class="fas fa-moon"></i>
         </button>
-
-        <div class="menu-wrapper">
-          <button class="circle-btn" id="menu-toggle" title="Menu">
-            <i class="fas fa-bars"></i>
-          </button>
-          <div class="dropdown-menu" id="dropdown-menu">
-            <a href="#" style="background: rgba(14, 165, 233, 0.1); color: var(--accent-blue);">
-              <i class="fas fa-user" style="width: 20px"></i>
-              <span id="username">Admin</span>
-            </a>
-            <a href="#"><i class="fas fa-map-location-dot" style="width: 20px"></i>All Sheds Overview</a>
-            <a href="#"><i class="fas fa-book" style="width: 20px"></i>Machine Logs</a>
-            <div class="dropdown-divider"></div>
-            <a href="#" style="color: var(--led-error)">
-              <i class="fas fa-sign-out-alt" style="width: 20px"></i> Logout
-            </a>
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- FILTERS PANEL -->
-    <div class="container-fluid filter-panel">
-      <div class="d-flex align-items-center mb-4 pb-3" style="border-bottom: 1px solid var(--grid-line)">
-        <i class="fas fa-filter me-2" style="color: var(--accent-blue); font-size: 20px"></i>
-        <h4 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main);">
-          Data Filters & Parameters
-        </h4>
-        <button class="btn-export btn-export-excel ms-auto" style="padding: 10px 18px; font-size: 13px; margin-left: 0" title="Utilization Report">
-          <i class="fas fa-chart-column"></i> Utilization Report
-        </button>
-        <button class="btn-export btn-export-pdf" style="padding: 10px 18px; font-size: 13px; margin-left: 10px" title="Full Logs Report">
-          <i class="fas fa-file-pdf"></i> Full Logs Report
-        </button>
+    <!-- MAIN DASHBOARD -->
+    <div class="container-fluid mb-5">
+      <!-- 6 Summary Cards -->
+      <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px;">
+        <div class="metric-card border-slate">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span class="metric-label">🏭 Total Machines</span>
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+              <div class="info-tooltip">Total machines under selected filters</div>
+            </div>
+          </div>
+          <span class="metric-value">42</span>
+        </div>
+
+        <div class="metric-card border-cyan">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span class="metric-label">⚙️ Parts Processed</span>
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+              <div class="info-tooltip">Number of completed parts/jobs</div>
+            </div>
+          </div>
+          <span class="metric-value text-cyan">4,289</span>
+        </div>
+
+        <div class="metric-card border-emerald">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span class="metric-label">▶️ Running Hours</span>
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+              <div class="info-tooltip">Total machine running time</div>
+            </div>
+          </div>
+          <span class="metric-value text-emerald">1,240h</span>
+        </div>
+
+        <div class="metric-card border-indigo">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span class="metric-label">📈 Avg Utilization %</span>
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+              <div class="info-tooltip">Average Run % of all machines</div>
+            </div>
+          </div>
+          <span class="metric-value text-indigo">72.4%</span>
+        </div>
+
+        <div class="metric-card border-red">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span class="metric-label">🔧 Breakdown Hours</span>
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+              <div class="info-tooltip">Total breakdown duration</div>
+            </div>
+          </div>
+          <span class="metric-value text-red">156h</span>
+        </div>
+
+        <div class="metric-card border-yellow">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span class="metric-label">⏸ Hold + Idle Hours</span>
+            <div class="info-icon">
+              <i class="fas fa-info-circle"></i>
+              <div class="info-tooltip">Total non-productive hours</div>
+            </div>
+          </div>
+          <span class="metric-value text-yellow">420h</span>
+        </div>
       </div>
 
+      <!-- Lane 1 Graphs (3 Charts) -->
       <div class="row g-4 mb-4">
-        <div class="col-md-3">
-          <label class="form-label"><i class="fas fa-industry"></i> Operating Unit</label>
-          <select class="form-select custom-select">
-            <option value="">All Units</option>
-            <option value="UNIT-1">Unit 1</option>
-            <option value="UNIT-2">Unit 2</option>
-            <option value="UNIT-3">Unit 3</option>
-          </select>
+        <!-- Graph 1 -->
+        <div class="col-md-4">
+          <div class="log-card" style="margin-bottom: 0;">
+            <div class="log-header">
+              <h4 class="log-title">Graph 1: Machine Utilization %</h4>
+              <button class="btn-enlarge" onclick="toggleFullscreen(this)"><i class="fas fa-expand"></i></button>
+            </div>
+            <div class="chart-container">
+              <canvas id="g1Chart"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="col-md-3">
-          <label class="form-label"><i class="fas fa-warehouse"></i> Workshop Shed</label>
-          <select class="form-select custom-select">
-            <option value="">All Sheds</option>
-          </select>
+        
+        <!-- Graph 2 -->
+        <div class="col-md-4">
+          <div class="log-card" style="margin-bottom: 0;">
+            <div class="log-header">
+              <h4 class="log-title">Graph 2: Running vs Idle vs Breakdown vs Hold</h4>
+              <button class="btn-enlarge" onclick="toggleFullscreen(this)"><i class="fas fa-expand"></i></button>
+            </div>
+            <div class="chart-container">
+              <canvas id="g2Chart"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="col-md-3">
-          <label class="form-label"><i class="fas fa-cogs"></i> Machine</label>
-          <select class="form-select custom-select">
-            <option value="">All Machines</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label"><i class="fas fa-list"></i> Select Log Type</label>
-          <select class="form-select custom-select">
-            <option value="all">All Logs (Default)</option>
-            <option value="part">Parts / Jobs Log Only</option>
-            <option value="breakdown">Breakdown Log Only</option>
-            <option value="hold">Hold / Pause Log Only</option>
-          </select>
+
+        <!-- Graph 4 -->
+        <div class="col-md-4">
+          <div class="log-card" style="margin-bottom: 0;">
+            <div class="log-header">
+              <h4 class="log-title">Graph 4: Machine Time Distribution</h4>
+              <button class="btn-enlarge" onclick="toggleFullscreen(this)"><i class="fas fa-expand"></i></button>
+            </div>
+            <div class="chart-container" style="display: flex; justify-content: center;">
+              <canvas id="g4Chart"></canvas>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="row g-4 align-items-end p-3 rounded">
-        <div class="col-md-12 mb-1">
-          <label class="form-label" style="font-size: 11px"><i class="fas fa-bolt text-warning"></i> Quick Date Filters</label>
-          <div class="d-flex flex-wrap gap-2">
-            <button class="btn-quick-filter">1 Day</button>
-            <button class="btn-quick-filter">7 Days</button>
-            <button class="btn-quick-filter">1 Month</button>
-            <button class="btn-quick-filter active">All Time</button>
+      <!-- Lane 2 Graphs (2 Charts) -->
+      <div class="row g-4 mb-4">
+        <!-- Graph 3 -->
+        <div class="col-md-6">
+          <div class="log-card" style="margin-bottom: 0;">
+            <div class="log-header">
+              <h4 class="log-title">Graph 3: Project-wise Machine Hours</h4>
+              <button class="btn-enlarge" onclick="toggleFullscreen(this)"><i class="fas fa-expand"></i></button>
+            </div>
+            <div class="chart-container">
+              <canvas id="g3Chart"></canvas>
+            </div>
           </div>
         </div>
-
-        <div class="col-md-4 mt-3">
-          <label class="form-label"><i class="far fa-calendar-alt"></i> Custom Start Date &amp; Time</label>
-          <div class="d-flex gap-2">
-            <input type="date" class="form-control custom-date" />
-            <input type="time" class="form-control custom-date" style="width: 8.5rem; padding-left: 10px; padding-right: 4px" value="00:00" />
+        
+        <!-- Graph 5 -->
+        <div class="col-md-6">
+          <div class="log-card" style="margin-bottom: 0;">
+            <div class="log-header">
+              <h4 class="log-title">Graph 5: Daily Running Hours Trend</h4>
+              <button class="btn-enlarge" onclick="toggleFullscreen(this)"><i class="fas fa-expand"></i></button>
+            </div>
+            <div class="chart-container">
+              <canvas id="g5Chart"></canvas>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4 mt-3">
-          <label class="form-label"><i class="far fa-calendar-check"></i> Custom End Date &amp; Time</label>
-          <div class="d-flex gap-2">
-            <input type="date" class="form-control custom-date" />
-            <input type="time" class="form-control custom-date" style="width: 8.5rem; padding-left: 10px; padding-right: 4px" value="00:00" />
-          </div>
-        </div>
-        <div class="col-md-4 mt-3 d-flex align-items-end">
-          <button class="btn btn-sm custom-clear-btn" style="padding: 6px 12px; font-size: 13px">
-            <i class="fas fa-times-circle me-1"></i> Clear Dates
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- MACHINE UTILIZATION SECTION -->
-    <div class="container-fluid" style="margin-bottom: 30px">
+    <!-- REPORT TOGGLES -->
+    <div class="container-fluid mb-4">
+      <div style="display: flex; gap: 15px; justify-content: center;">
+        <button class="btn-toggle active" id="btn-toggle-utilization" onclick="toggleReport('utilization')">
+          <i class="fas fa-chart-column"></i> View Utilization Report
+        </button>
+        <button class="btn-toggle" id="btn-toggle-logs" onclick="toggleReport('logs')">
+          <i class="fas fa-file-lines"></i> View Full Logs Report
+        </button>
+      </div>
+    </div>
+
+    <!-- UTILIZATION REPORT SECTION -->
+    <div class="container-fluid report-section active" id="section-utilization">
       <div class="log-card">
         <div class="log-header">
           <h3 class="log-title">
-            <i class="fas fa-chart-column me-2" style="color: var(--led-run)"></i>Machine Utilization
-            <span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 10px;">— All Units & Sheds · 27 Jun 2026, 15:48 to 27 Jul 2026, 15:48 (last 30 days)</span>
+            <i class="fas fa-chart-column me-2" style="color: var(--led-run)"></i>Machine Utilization Data
+            <span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 10px;">— Last 30 Days</span>
           </h3>
-          <div>
-            <button class="btn-export btn-export-pdf">
-              <i class="fas fa-file-pdf"></i> PDF
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-export btn-export-pdf" onclick="window.open('./Machine_Utilization__AllSheds.pdf', '_blank')">
+              <i class="fas fa-file-pdf"></i> Download PDF
             </button>
-            <button class="btn-export btn-export-excel">
-              <i class="fas fa-file-excel"></i> Excel
+            <button class="btn-export btn-export-excel" onclick="window.location.href='./Machine_Utilization__AllSheds.xlsx'">
+              <i class="fas fa-file-excel"></i> Download Excel
             </button>
           </div>
         </div>
         
-        <!-- Metrics -->
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px">
-          <div class="metric-card border-cyan">
-            <span class="metric-label">AVG PARTS</span>
-            <span class="metric-value text-cyan">1,245</span>
-          </div>
-          <div class="metric-card border-emerald">
-            <span class="metric-label">AVG RUNNING</span>
-            <span class="metric-value text-emerald">78.4%</span>
-          </div>
-          <div class="metric-card border-slate">
-            <span class="metric-label">AVG IDLE</span>
-            <span class="metric-value text-slate">12.1%</span>
-          </div>
-          <div class="metric-card border-red">
-            <span class="metric-label">AVG BREAKDOWN</span>
-            <span class="metric-value text-red">4.3%</span>
-          </div>
-          <div class="metric-card border-yellow">
-            <span class="metric-label">AVG HOLD</span>
-            <span class="metric-value text-yellow">5.2%</span>
-          </div>
-        </div>
-
-        <!-- Charts Grid -->
-        <div class="row g-4 mb-4">
-          <div class="col-md-4">
-            <div class="chart-container">
-              <canvas id="utilBarChart"></canvas>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="chart-container" style="display: flex; justify-content: center;">
-              <canvas id="utilDoughnutChart"></canvas>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="chart-container">
-              <canvas id="utilLineChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Data Table -->
         <div class="table-wrapper">
           <table class="custom-table">
             <thead>
               <tr>
-                <th>Date</th>
                 <th>Machine</th>
                 <th>Unit</th>
                 <th>Shed</th>
@@ -587,40 +580,48 @@
             </thead>
             <tbody>
               <tr>
-                <td>27 Jul 2026</td>
-                <td style="font-weight: 600;">CNC-Milling-01</td>
-                <td>Unit 1</td>
-                <td>Shed A</td>
-                <td style="text-align: right;">142</td>
-                <td style="text-align: right; color: var(--led-run);">18h 20m</td>
-                <td style="text-align: right; color: var(--text-muted);">2h 10m</td>
-                <td style="text-align: right; color: var(--led-error);">1h 00m</td>
-                <td style="text-align: right; color: var(--led-warn);">2h 30m</td>
+                <td style="font-weight: 600;">Conventional Boring</td>
+                <td>UNIT 3</td>
+                <td>SHED A</td>
+                <td style="text-align: right;">51</td>
+                <td style="text-align: right; color: var(--led-run);">120h 20m</td>
+                <td style="text-align: right; color: var(--text-muted);">20h 10m</td>
+                <td style="text-align: right; color: var(--led-error);">12h 00m</td>
+                <td style="text-align: right; color: var(--led-warn);">5h 30m</td>
                 <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">76.3%</td>
               </tr>
               <tr>
-                <td>26 Jul 2026</td>
-                <td style="font-weight: 600;">Lathe-Heavy-03</td>
-                <td>Unit 2</td>
-                <td>Shed B</td>
-                <td style="text-align: right;">89</td>
-                <td style="text-align: right; color: var(--led-run);">20h 45m</td>
-                <td style="text-align: right; color: var(--text-muted);">1h 15m</td>
-                <td style="text-align: right; color: var(--led-error);">0h 00m</td>
-                <td style="text-align: right; color: var(--led-warn);">2h 00m</td>
+                <td style="font-weight: 600;">VTL-VL160C</td>
+                <td>UNIT 3</td>
+                <td>SHED A</td>
+                <td style="text-align: right;">152</td>
+                <td style="text-align: right; color: var(--led-run);">200h 45m</td>
+                <td style="text-align: right; color: var(--text-muted);">15h 15m</td>
+                <td style="text-align: right; color: var(--led-error);">8h 00m</td>
+                <td style="text-align: right; color: var(--led-warn);">12h 00m</td>
                 <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">86.4%</td>
               </tr>
               <tr>
-                <td>25 Jul 2026</td>
-                <td style="font-weight: 600;">Plasma-Cutter-02</td>
-                <td>Unit 1</td>
-                <td>Shed C</td>
-                <td style="text-align: right;">315</td>
-                <td style="text-align: right; color: var(--led-run);">15h 30m</td>
-                <td style="text-align: right; color: var(--text-muted);">4h 00m</td>
-                <td style="text-align: right; color: var(--led-error);">3h 30m</td>
-                <td style="text-align: right; color: var(--led-warn);">1h 00m</td>
+                <td style="font-weight: 600;">HMC-HG1250</td>
+                <td>UNIT 3</td>
+                <td>SHED A</td>
+                <td style="text-align: right;">120</td>
+                <td style="text-align: right; color: var(--led-run);">155h 30m</td>
+                <td style="text-align: right; color: var(--text-muted);">40h 00m</td>
+                <td style="text-align: right; color: var(--led-error);">32h 30m</td>
+                <td style="text-align: right; color: var(--led-warn);">10h 00m</td>
                 <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">64.5%</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 600;">Skoda</td>
+                <td>UNIT 1</td>
+                <td>SHED A</td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right; color: var(--led-run);">0s</td>
+                <td style="text-align: right; color: var(--text-muted);">30d</td>
+                <td style="text-align: right; color: var(--led-error);">0s</td>
+                <td style="text-align: right; color: var(--led-warn);">0s</td>
+                <td style="text-align: right; color: var(--accent-blue); font-weight: 600;">0.0%</td>
               </tr>
             </tbody>
           </table>
@@ -629,74 +630,29 @@
     </div>
 
     <!-- FULL LOGS REPORT SECTION -->
-    <div class="container-fluid" style="margin-bottom: 30px">
+    <div class="container-fluid report-section" id="section-logs">
       <div class="log-card">
         <div class="log-header">
           <h3 class="log-title">
-            <i class="fas fa-file-lines me-2" style="color: var(--accent-blue)"></i>Full Logs Report
-            <span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 10px;">— All Units (All Sheds) · Beginning to Today</span>
+            <i class="fas fa-file-lines me-2" style="color: var(--accent-blue)"></i>Full Logs Data
+            <span style="font-size: 13px; color: var(--text-muted); font-weight: 500; margin-left: 10px;">— All Units (All Sheds)</span>
           </h3>
-          <div>
-            <button class="btn-export btn-export-pdf">
-              <i class="fas fa-file-pdf"></i> PDF
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-export btn-export-pdf" onclick="window.open('./Machines_Report_AllUnits.pdf', '_blank')">
+              <i class="fas fa-file-pdf"></i> Download PDF
             </button>
-            <button class="btn-export btn-export-excel">
-              <i class="fas fa-file-excel"></i> Excel
+            <button class="btn-export btn-export-excel" onclick="window.location.href='./Machines_Report_AllUnits.xlsx'">
+              <i class="fas fa-file-excel"></i> Download Excel
             </button>
           </div>
         </div>
 
-        <!-- Metrics -->
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px">
-          <div class="metric-card border-cyan">
-            <span class="metric-label">TOTAL JOBS</span>
-            <span class="metric-value text-cyan">8,932</span>
-          </div>
-          <div class="metric-card border-slate">
-            <span class="metric-label">AVG DURATION</span>
-            <span class="metric-value" style="color: #818cf8;">4h 12m</span>
-          </div>
-          <div class="metric-card border-emerald">
-            <span class="metric-label">ACTIVE MACHINES</span>
-            <span class="metric-value text-emerald">42 / 45</span>
-          </div>
-          <div class="metric-card border-red">
-            <span class="metric-label">TOTAL BREAKDOWNS</span>
-            <span class="metric-value text-red">156</span>
-          </div>
-          <div class="metric-card border-yellow">
-            <span class="metric-label">TOTAL HOLD TIME</span>
-            <span class="metric-value text-yellow">420 hrs</span>
-          </div>
-        </div>
-
-        <!-- Charts Grid -->
-        <div class="row g-4 mb-4">
-          <div class="col-md-4">
-            <div class="chart-container">
-              <canvas id="logsLineChart"></canvas>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="chart-container">
-              <canvas id="logsBarChart"></canvas>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="chart-container" style="display: flex; justify-content: center;">
-              <canvas id="logsPieChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Data Table -->
         <div class="table-wrapper">
           <table class="custom-table">
             <thead>
               <tr>
                 <th>Machine</th>
                 <th>Unit / Shed</th>
-                <th>Date</th>
                 <th>Project No</th>
                 <th>Client</th>
                 <th>Part Name</th>
@@ -708,39 +664,36 @@
             </thead>
             <tbody>
               <tr>
-                <td style="font-weight: 600;">CNC-Milling-01</td>
-                <td>U1 / SA</td>
-                <td>27 Jul 2026</td>
+                <td style="font-weight: 600;">Conventional Boring</td>
+                <td>UNIT 3 / SA</td>
                 <td style="color: var(--accent-blue); font-weight: 600;">PRJ-2026-89</td>
                 <td>Tata Steel</td>
                 <td>Housing Base</td>
                 <td style="color: var(--text-muted);">DWG-8812-A</td>
-                <td style="color: var(--text-muted);">08:00</td>
-                <td style="color: var(--text-muted);">14:30</td>
+                <td style="color: var(--text-muted);">27 Jul 08:00</td>
+                <td style="color: var(--text-muted);">27 Jul 14:30</td>
                 <td style="text-align: right; color: var(--led-run); font-weight: 600;">6h 30m</td>
               </tr>
               <tr>
-                <td style="font-weight: 600;">Lathe-Heavy-03</td>
-                <td>U2 / SB</td>
-                <td>26 Jul 2026</td>
+                <td style="font-weight: 600;">VTL-VL160C</td>
+                <td>UNIT 3 / SA</td>
                 <td style="color: var(--accent-blue); font-weight: 600;">PRJ-2026-92</td>
                 <td>JSW</td>
                 <td>Main Shaft</td>
                 <td style="color: var(--text-muted);">DWG-9901-C</td>
-                <td style="color: var(--text-muted);">10:15</td>
-                <td style="color: var(--text-muted);">19:45</td>
+                <td style="color: var(--text-muted);">26 Jul 10:15</td>
+                <td style="color: var(--text-muted);">26 Jul 19:45</td>
                 <td style="text-align: right; color: var(--led-run); font-weight: 600;">9h 30m</td>
               </tr>
               <tr>
-                <td style="font-weight: 600;">Boring-Mac-01</td>
-                <td>U1 / SC</td>
-                <td>25 Jul 2026</td>
+                <td style="font-weight: 600;">HMC-HG1250</td>
+                <td>UNIT 3 / SA</td>
                 <td style="color: var(--accent-blue); font-weight: 600;">PRJ-2026-77</td>
                 <td>Essar</td>
                 <td>Gearbox Casing</td>
                 <td style="color: var(--text-muted);">DWG-7742-B</td>
-                <td style="color: var(--text-muted);">09:00</td>
-                <td style="color: var(--text-muted);">11:15</td>
+                <td style="color: var(--text-muted);">25 Jul 09:00</td>
+                <td style="color: var(--text-muted);">25 Jul 11:15</td>
                 <td style="text-align: right; color: var(--led-run); font-weight: 600;">2h 15m</td>
               </tr>
             </tbody>
@@ -750,23 +703,6 @@
     </div>
 
     <script>
-      // --- MENU TOGGLE LOGIC ---
-      const menuToggle = document.getElementById("menu-toggle");
-      const dropdownMenu = document.getElementById("dropdown-menu");
-
-      if (menuToggle && dropdownMenu) {
-        menuToggle.addEventListener("click", (e) => {
-          e.stopPropagation();
-          dropdownMenu.classList.toggle("active");
-        });
-
-        document.addEventListener("click", (e) => {
-          if (!dropdownMenu.contains(e.target) && e.target !== menuToggle) {
-            dropdownMenu.classList.remove("active");
-          }
-        });
-      }
-
       // --- THEME LOGIC ---
       const themeToggleBtn = document.getElementById("theme-toggle");
       const body = document.body;
@@ -787,6 +723,32 @@
           localStorage.setItem("yd_theme", "dark");
         }
       });
+
+      // --- FULLSCREEN TOGGLE ---
+      function toggleFullscreen(btn) {
+        const card = btn.closest('.log-card');
+        const icon = btn.querySelector('i');
+        if (card.classList.contains('fullscreen')) {
+          card.classList.remove('fullscreen');
+          icon.classList.replace('fa-compress', 'fa-expand');
+        } else {
+          card.classList.add('fullscreen');
+          icon.classList.replace('fa-expand', 'fa-compress');
+        }
+      }
+
+      // --- TOGGLE REPORTS LOGIC ---
+      function toggleReport(reportType) {
+        document.getElementById('btn-toggle-utilization').classList.remove('active');
+        document.getElementById('btn-toggle-logs').classList.remove('active');
+        document.getElementById(`btn-toggle-${reportType}`).classList.add('active');
+
+        document.getElementById('section-utilization').classList.remove('active');
+        document.getElementById('section-logs').classList.remove('active');
+        document.getElementById(`section-${reportType}`).classList.add('active');
+        
+        document.getElementById(`section-${reportType}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       
       // --- CHART INITIALIZATION ---
       Chart.defaults.color = '#94a3b8'; // --text-muted
@@ -800,159 +762,113 @@
       const slate = '#64748b'; 
       const indigo = '#818cf8';
 
-      // 1. Machine Utilization: Bar Chart (Running vs Idle vs Breakdown)
-      const ctxUtilBar = document.getElementById('utilBarChart').getContext('2d');
-      new Chart(ctxUtilBar, {
+      // Graph 1: Machine Utilization % (Column)
+      const ctxG1 = document.getElementById('g1Chart').getContext('2d');
+      new Chart(ctxG1, {
           type: 'bar',
           data: {
-              labels: ['Unit 1', 'Unit 2', 'Unit 3', 'Unit 4'],
+              labels: ['VMC', 'HMC', 'Lathe', 'Drill', 'Boring'],
+              datasets: [{
+                  label: 'Run %',
+                  data: [85, 76, 92, 45, 68],
+                  backgroundColor: cyan,
+                  borderRadius: 4
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: { y: { max: 100 } }
+          }
+      });
+
+      // Graph 2: Running vs Idle vs Breakdown vs Hold (Stacked Column)
+      const ctxG2 = document.getElementById('g2Chart').getContext('2d');
+      new Chart(ctxG2, {
+          type: 'bar',
+          data: {
+              labels: ['VMC', 'HMC', 'Lathe', 'Drill', 'Boring'],
               datasets: [
-                  { label: 'Running', data: [75, 82, 68, 90], backgroundColor: emerald },
-                  { label: 'Idle', data: [15, 10, 20, 5], backgroundColor: slate },
-                  { label: 'Breakdown', data: [10, 8, 12, 5], backgroundColor: red }
+                  { label: 'Running', data: [120, 150, 180, 80, 100], backgroundColor: emerald },
+                  { label: 'Idle', data: [20, 30, 10, 40, 25], backgroundColor: slate },
+                  { label: 'Breakdown', data: [10, 15, 5, 20, 12], backgroundColor: red },
+                  { label: 'Hold', data: [5, 5, 5, 10, 5], backgroundColor: yellow }
               ]
           },
           options: {
               responsive: true,
               maintainAspectRatio: false,
-              plugins: {
-                  legend: { position: 'top' },
-                  title: { display: true, text: 'Utilization by Unit (%)', color: '#f8fafc' }
-              },
+              plugins: { legend: { position: 'top' } },
               scales: {
                   x: { stacked: true },
-                  y: { stacked: true, max: 100 }
+                  y: { stacked: true }
               }
           }
       });
 
-      // 2. Machine Utilization: Doughnut Chart (Overall Status)
-      const ctxUtilDoughnut = document.getElementById('utilDoughnutChart').getContext('2d');
-      new Chart(ctxUtilDoughnut, {
-          type: 'doughnut',
+      // Graph 4: Machine Time Distribution (Pie)
+      const ctxG4 = document.getElementById('g4Chart').getContext('2d');
+      new Chart(ctxG4, {
+          type: 'pie',
           data: {
               labels: ['Running', 'Idle', 'Breakdown', 'Hold'],
               datasets: [{
-                  data: [65, 15, 10, 10],
+                  data: [62, 28, 7, 3],
                   backgroundColor: [emerald, slate, red, yellow],
-                  borderWidth: 0
+                  borderWidth: 1,
+                  borderColor: 'rgba(15, 23, 42, 0.85)'
               }]
           },
           options: {
               responsive: true,
               maintainAspectRatio: false,
-              cutout: '70%',
-              plugins: {
-                  legend: { position: 'right' },
-                  title: { display: true, text: 'Overall Time Distribution', color: '#f8fafc' }
-              }
+              plugins: { legend: { position: 'right' } }
           }
       });
 
-      // 3. Machine Utilization: Line Chart (Trend over time)
-      const ctxUtilLine = document.getElementById('utilLineChart').getContext('2d');
-      new Chart(ctxUtilLine, {
+      // Graph 3: Project-wise Machine Hours (Horizontal Bar)
+      const ctxG3 = document.getElementById('g3Chart').getContext('2d');
+      new Chart(ctxG3, {
+          type: 'bar',
+          data: {
+              labels: ['P2518', 'P2428', 'P2521', 'P2610'],
+              datasets: [{
+                  label: 'Running Hours',
+                  data: [350, 280, 190, 120],
+                  backgroundColor: indigo,
+                  borderRadius: 4
+              }]
+          },
+          options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } }
+          }
+      });
+
+      // Graph 5: Daily Running Hours Trend (Line)
+      const ctxG5 = document.getElementById('g5Chart').getContext('2d');
+      new Chart(ctxG5, {
           type: 'line',
           data: {
               labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-              datasets: [
-                  {
-                      label: 'Avg Run %',
-                      data: [72, 75, 78, 74, 80, 85, 82],
-                      borderColor: cyan,
-                      backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                      borderWidth: 2,
-                      fill: true,
-                      tension: 0.4
-                  }
-              ]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: { display: false },
-                  title: { display: true, text: 'Running % Trend (Last 7 Days)', color: '#f8fafc' }
-              },
-              scales: {
-                  y: { min: 50, max: 100 }
-              }
-          }
-      });
-
-      // 4. Logs Report: Line Chart (Jobs Completed)
-      const ctxLogsLine = document.getElementById('logsLineChart').getContext('2d');
-      new Chart(ctxLogsLine, {
-          type: 'line',
-          data: {
-              labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-              datasets: [
-                  {
-                      label: 'Jobs Completed',
-                      data: [210, 245, 195, 280],
-                      borderColor: indigo,
-                      backgroundColor: 'rgba(129, 140, 248, 0.1)',
-                      borderWidth: 2,
-                      fill: true,
-                      tension: 0.4
-                  }
-              ]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: { display: false },
-                  title: { display: true, text: 'Weekly Jobs Completed', color: '#f8fafc' }
-              }
-          }
-      });
-
-      // 5. Logs Report: Bar Chart (Breakdowns by Machine Type)
-      const ctxLogsBar = document.getElementById('logsBarChart').getContext('2d');
-      new Chart(ctxLogsBar, {
-          type: 'bar',
-          data: {
-              labels: ['CNC', 'Lathe', 'Milling', 'Plasma', 'Drill'],
-              datasets: [
-                  {
-                      label: 'Breakdown Incidents',
-                      data: [12, 19, 8, 5, 2],
-                      backgroundColor: red,
-                      borderRadius: 4
-                  }
-              ]
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: { display: false },
-                  title: { display: true, text: 'Breakdowns by Machine Type', color: '#f8fafc' }
-              }
-          }
-      });
-
-      // 6. Logs Report: Pie Chart (Hold Reasons)
-      const ctxLogsPie = document.getElementById('logsPieChart').getContext('2d');
-      new Chart(ctxLogsPie, {
-          type: 'pie',
-          data: {
-              labels: ['Waiting for Material', 'Operator Unavailable', 'Quality Check', 'Tooling Issue'],
               datasets: [{
-                  data: [45, 25, 20, 10],
-                  backgroundColor: [yellow, '#f59e0b', '#fbbf24', '#fcd34d'],
-                  borderWidth: 1,
-                  borderColor: 'rgba(15, 23, 42, 0.85)' // Match panel background for seamless cutout effect
+                  label: 'Running Hours',
+                  data: [142, 145, 138, 150, 155, 148, 140],
+                  borderColor: emerald,
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                  borderWidth: 2,
+                  fill: true,
+                  tension: 0.4
               }]
           },
           options: {
               responsive: true,
               maintainAspectRatio: false,
-              plugins: {
-                  legend: { position: 'right' },
-                  title: { display: true, text: 'Hold Reasons Breakdown', color: '#f8fafc' }
-              }
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true } }
           }
       });
     </script>
